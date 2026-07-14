@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir *)",
+      "mcp__claude_ai_Figma__read_skill_uri",
+      "mcp__claude_ai_Figma__use_figma",
+      "Bash(start *)",
+      "Read(//c/Users/97250/AppData/Local/Temp/claude/C--Users-97250-Meyrav-claude-cod/f5453b0f-32e4-4735-90b1-0191e7decd46/scratchpad/**)",
+      "Bash(cp -r \"/c/Users/97250/Meyrav claude cod/Dana frenkel/homepage/assets\" \"/c/Users/97250/AppData/Local/Temp/claude/C--Users-97250-Meyrav-claude-cod/f5453b0f-32e4-4735-90b1-0191e7decd46/scratchpad/assets\")",
+      "Bash(git commit -m 'Initial commit: Dana Frenkel website \\(homepage + case study\\) and App ZePo materials *)"
+    ]
+  }
+}

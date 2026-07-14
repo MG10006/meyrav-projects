@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>עיצוב מחדש לדף הבית — Dana Frenkel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf5eb;
+    --ink:#111112;
+    --pink:#e0127e;
+    --sub:#55555a;
+    --body:#3a3a3d;
+    --muted:#8a8a8e;
+    --num:#b4b4b8;
+    --line:#e4e4e7;
+    --card:rgba(250,250,250,.5);
+    --card-alt:rgba(255,255,255,.5);
+    --gold:#cb9b42;
+    --dark:#2c2c2e;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    font-family:'Heebo',sans-serif;
+    color:var(--body);
+  }
+  .content{
+    max-width:1200px;
+    margin:0 auto;
+    padding-bottom:140px;
+  }
+  .cover{
+    border-bottom:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:140px 100px 100px;
+    text-align:center;
+  }
+  .cover h1{
+    font-size:clamp(34px,6vw,64px);
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.2;
+    margin:0;
+  }
+  .cover h1 .accent{color:var(--pink);display:block;}
+  .cover .subtitle{
+    font-size:clamp(18px,2.4vw,26px);
+    font-weight:400;
+    color:var(--sub);
+    margin:40px 0 0;
+  }
+  .badges{
+    border-top:1px solid var(--line);
+    display:flex;
+    gap:28px;
+    align-items:center;
+    justify-content:center;
+    padding-top:36px;
+    margin-top:56px;
+    width:min(700px,100%);
+  }
+  .badge{display:flex;gap:8px;align-items:center;}
+  .badge img{width:24px;height:24px;}
+  .badge span{font-size:15px;font-weight:500;color:#6b6b70;}
+  .badge-divider{width:1px;height:16px;background:#d4d4d8;}
+
+  .section{
+    border-bottom:1px solid var(--line);
+    padding:96px 100px;
+  }
+  .section:last-of-type{border-bottom:none;}
+  .row{display:flex;gap:48px;align-items:flex-start;width:100%;}
+  .row .text{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:28px;}
+  .section-num{
+    font-weight:700;
+    font-size:64px;
+    color:var(--num);
+    width:140px;
+    flex-shrink:0;
+    text-align:right;
+  }
+  .section h2{font-size:38px;font-weight:700;color:var(--ink);margin:0;}
+  .section p.lead{font-size:20px;line-height:1.8;color:var(--body);margin:0;}
+  .section .eyebrow{font-size:18px;color:var(--muted);margin:8px 0 0;}
+
+  /* comparison table (section 3) */
+  .table-wrap{width:100%;overflow-x:auto;}
+  table.compare{border-collapse:collapse;width:100%;min-width:820px;}
+  table.compare th, table.compare td{
+    padding:16px 20px;
+    text-align:right;
+    font-size:17px;
+    border:1px solid var(--line);
+    vertical-align:top;
+  }
+  table.compare thead th{
+    background:rgba(236,236,238,.5);
+    font-weight:600;
+    color:var(--ink);
+  }
+  table.compare thead th:first-child{border-radius:16px 0 0 0;}
+  table.compare thead th:last-child{border-radius:0 16px 0 0;}
+  table.compare tbody tr:nth-child(odd) td{background:#fff;}
+  table.compare tbody tr:nth-child(even) td{background:#fafafa;}
+  table.compare tbody td:last-child{font-weight:500;color:var(--sub);}
+  table.compare tbody tr:last-child td:first-child{border-radius:0 0 0 16px;}
+  table.compare tbody tr:last-child td:last-child{border-radius:0 0 16px 0;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:28px 32px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    width:100%;
+  }
+  .card.alt{background:var(--card-alt);border:none;}
+  .card h3{font-size:24px;font-weight:600;color:var(--ink);margin:0;}
+  .card p{font-size:19px;line-height:1.8;margin:0;color:var(--body);}
+  .card ul, .card .list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:19px;line-height:1.9;}
+  .card .list.small{font-size:17px;line-height:1.85;gap:6px;}
+
+  .stack{display:flex;flex-direction:column;gap:32px;width:100%;}
+  .hero-img{width:100%;border-radius:14px;display:block;object-fit:cover;}
+  .hero-img.old{max-height:382px;height:382px;object-fit:cover;}
+  .hero-img.new{max-height:339px;height:339px;object-fit:cover;}
+
+  .strengths-cols{display:flex;gap:40px;font-size:17px;line-height:1.85;}
+  .strengths-cols > div{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+
+  .palette-card{background:var(--card-alt);border-radius:10px;padding:32px;display:flex;flex-direction:column;gap:16px;width:100%;}
+  .swatches{display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
+  .swatch{display:flex;gap:12px;align-items:center;}
+  .swatch .chip{width:44px;height:44px;border-radius:8px;border:1px solid var(--line);flex-shrink:0;}
+  .swatch span{font-size:16px;color:var(--body);}
+
+  /* section 6 full comparison table */
+  table.compare2{border-collapse:collapse;width:100%;max-width:1000px;}
+  table.compare2 th, table.compare2 td{
+    padding:14px 18px;
+    text-align:right;
+    font-size:16px;
+    border:1px solid var(--line);
+  }
+  table.compare2 thead th{background:rgba(236,236,238,.5);font-weight:600;color:var(--ink);}
+  table.compare2 thead th:first-child{border-radius:16px 0 0 0;}
+  table.compare2 thead th:last-child{border-radius:0 16px 0 0;}
+  table.compare2 tbody tr:nth-child(odd) td{background:#fff;}
+  table.compare2 tbody tr:nth-child(even) td{background:#fafafa;}
+  table.compare2 tbody td:last-child{font-weight:500;color:var(--sub);}
+  table.compare2 tbody tr:last-child td:first-child{border-radius:0 0 0 16px;}
+  table.compare2 tbody tr:last-child td:last-child{border-radius:0 0 16px 0;}
+
+  /* section 7 reasoning grid */
+  .reason-grid{display:flex;flex-direction:column;gap:32px;width:100%;}
+  .reason-row{display:flex;gap:40px;align-items:flex-start;}
+  .reason-item{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:10px;}
+  .reason-item .tag{font-size:16px;font-weight:700;color:var(--muted);}
+  .reason-item p{font-size:18px;line-height:1.8;margin:0;color:var(--body);}
+  .reason-spacer{flex:1 1 0;min-width:0;}
+
+  .summary p{font-size:20px;line-height:1.8;margin:0 0 4px;color:var(--body);}
+
+  .cta-wrap{display:flex;justify-content:center;padding:20px 100px 56px;}
+  .cta-btn{
+    background:#1c1c1e;
+    color:#fff;
+    border-radius:30px;
+    padding:18px 40px;
+    font-size:18px;
+    font-weight:500;
+    text-decoration:none;
+    display:inline-block;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .cta-btn:hover{background:var(--pink);transform:translateY(-2px);}
+
+  @media (max-width:860px){
+    .cover{padding:80px 24px 56px;}
+    .section{padding:56px 24px;}
+    .row{flex-direction:column;gap:24px;}
+    .section-num{width:auto;order:-1;font-size:44px;}
+    .strengths-cols{flex-direction:column;gap:20px;}
+    .reason-row{flex-direction:column;gap:20px;}
+    .reason-spacer{display:none;}
+    .cta-wrap{padding:20px 24px 56px;}
+  }
+
+  /* ---- reveal animation: sections stagger in one after another ---- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+  }
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+  .reveal-child{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1);
+  }
+  .is-visible .reveal-child{opacity:1;transform:translateY(0);}
+  .reveal-row{
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .5s cubic-bezier(.22,.61,.36,1), transform .5s cubic-bezier(.22,.61,.36,1);
+  }
+  .is-visible .reveal-row{opacity:1;transform:translateY(0);}
+
+  /* ---- side progress navigation ---- */
+  .progress-bar{
+    position:fixed;
+    top:40px;
+    left:28px;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .dot-col{display:flex;flex-direction:column;align-items:center;}
+  .dot-num{
+    width:32px;height:32px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:600;
+    background:#fff;color:var(--num);
+    border:1px solid #d4d4d8;
+    font-family:'Heebo',sans-serif;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .dot-num:hover:not(.active){background:#1c1c1e;color:#fff;border-color:#1c1c1e;transform:scale(1.15);}
+  .dot-num.active{width:44px;height:44px;font-size:17px;background:#1c1c1e;color:#fff;border-color:#1c1c1e;}
+  .dot-line{width:1px;height:28px;background:#d4d4d8;}
+  .dot-col:last-child .dot-line{height:0;}
+  @media print{.progress-bar{display:none !important;}}
+  @media (max-width:960px){.progress-bar{display:none;}}
+</style>
+</head>
+<body>
+
+<nav id="progress-bar" class="progress-bar" aria-label="ניווט בין הסקשנים">
+  <div class="dot-col"><div class="dot-num active" data-n="1" title="01 · רקע">01</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="2" title="02 · האתגר">02</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="3" title="03 · השוואת קהלי יעד">03</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="4" title="04 · העיצוב הקיים">04</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="5" title="05 · העיצוב החדש">05</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="6" title="06 · השוואה מקיפה">06</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="7" title="07 · הנמקת החלטות">07</div><div class="dot-line"></div></div>
+  <div class="dot-col"><div class="dot-num" data-n="8" title="08 · סיכום">08</div></div>
+</nav>
+
+<div class="content">
+
+  <!-- Cover -->
+  <section class="cover reveal">
+    <h1>עיצוב מחדש לדף הבית<span class="accent">Dana Frenkel</span></h1>
+    <p class="subtitle">מיצוב מחדש לקהל בכירים ומנהלים</p>
+    <div class="badges">
+      <div class="badge"><img src="assets/figma-icon.svg" alt=""><span>Figma</span></div>
+      <div class="badge-divider"></div>
+      <div class="badge"><img src="assets/claude-icon.svg" alt=""><span>Claude</span></div>
+    </div>
+  </section>
+
+  <!-- 01 רקע -->
+  <section id="sec-1" class="section reveal">
+    <div class="row">
+      <div class="text">
+        <h2>רקע</h2>
+        <p class="lead">דנה פרנקל היא יועצת קריירה ומאמנת תעסוקתית בעלת 15 שנות ניסיון. האתר הקיים שלה פונה לקהל רחב של מחפשי עבודה. הפרויקט הנוכחי מטרתו לבחון עיצוב חלופי לדף הבית שפונה לפרופיל לקוח שונה: מנהלים, בכירים ואנשי מקצוע ותיקים.</p>
+      </div>
+      <p class="section-num">01</p>
+    </div>
+  </section>
+
+  <!-- 02 האתגר -->
+  <section id="sec-2" class="section reveal">
+    <div class="row">
+      <div class="text">
+        <h2>האתגר</h2>
+        <p class="lead">האתר הקיים בנוי היטב לקהל של מחפשי עבודה כלליים, אך אינו מדבר בשפה של בכירים ומנהלים. האתגר היה לשמור על זהות המותג של דנה תוך התאמת הנרטיב, העיצוב והמבנה לקהל יעד שמצפה לרמה אחרת של מקצועיות ואסטרטגיה.</p>
+      </div>
+      <p class="section-num">02</p>
+    </div>
+  </section>
+
+  <!-- 03 השוואת קהלי יעד -->
+  <section id="sec-3" class="section reveal">
+    <div class="row">
+      <div class="text" style="gap:40px;">
+        <h2>השוואת קהלי יעד</h2>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>קהל חדש — בכירים ומנהלים</th>
+                <th>קהל קיים — מחפשי עבודה</th>
+                <th>היבט</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="reveal-row"><td>מנהלים, בכירים, C-level, דירקטורים</td><td>כל מי שמחפש עבודה — כולל שינוי קריירה</td><td>פרופיל</td></tr>
+              <tr class="reveal-row"><td>לא מצליחים לפרוץ למרות הניסיון</td><td>שולחים קו"ח ולא מקבלים תגובות</td><td>כאב מרכזי</td></tr>
+              <tr class="reveal-row"><td>אסטרטגיה, מיצוב ובהירות עסקית</td><td>כלים פרקטיים ותמיכה קהילתית</td><td>ציפייה מהמוצר</td></tr>
+              <tr class="reveal-row"><td>מקצועי, אוטוריטטיבי, ממוקד תוצאה</td><td>חם, מעודד, קהילתי</td><td>טון מתאים</td></tr>
+              <tr class="reveal-row"><td>שיחת היכרות אישית High-touch</td><td>סדנה חינמית / הרשמה למייל</td><td>CTA מועדף</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="section-num">03</p>
+    </div>
+  </section>
+
+  <!-- 04 ניתוח העיצוב הקיים -->
+  <section id="sec-4" class="section reveal">
+    <div class="row">
+      <div class="text">
+        <div>
+          <h2>ניתוח העיצוב הקיים</h2>
+          <p class="eyebrow">danafrenkel.co.il — דף הבית הנוכחי</p>
+        </div>
+        <div class="stack">
+          <img class="hero-img old" src="assets/hero-old.png" alt="Hero — עיצוב קיים">
+
+          <div class="card reveal-child">
+            <h3>4.1 כותרת ראשי Hero</h3>
+            <p>הכותרת הראשית היא "שינוי תעסוקתי. אישי. מדויק." — פניה רגשית ורחבה המתאימה לכל אחד. מיד מתחת מופיע טופס הרשמה לסדנה חינמית, שהוא מוביל מגנטי קלאסי לקהל המוני.</p>
+          </div>
+
+          <div class="card reveal-child">
+            <h3>4.2 שפה ועיצוב</h3>
+            <ul class="list">
+              <li>שפה כוללנית ורגשית: "מחפש.ת", "אנחנו", "לא יודעים לשים על זה את האצבע"</li>
+              <li>פלטת צבעים: גוונים חמים, סגול לבנדר, סגנון נשי ופתוח</li>
+              <li>ניווט רחב: דף הבית, אודות, 6 שירותים, קבוצות וואטסאפ, בלוג, יצירת קשר</li>
+              <li>הוכחה חברתית: המלצות טקסטואליות אישיות ורגשיות</li>
+              <li>לידים: טפסי הרשמה לסדנה חינמית, קבוצות וואטסאפ</li>
+            </ul>
+          </div>
+
+          <div class="card reveal-child">
+            <h3>4.3 חזקות</h3>
+            <ul class="list small">
+              <li>בניית אמון אישי חזקה</li>
+              <li>קהילתיות — 50+ קבוצות וואטסאפ</li>
+              <li>תוכן עשיר: בלוג, אינסטגרם, כתבות</li>
+            </ul>
+          </div>
+
+          <div class="card reveal-child">
+            <h3>4.4 חולשות ביחס לקהל הבכירים</h3>
+            <ul class="list small">
+              <li>הטון לא מדבר אל מנהל שמרוויח 20K+ ש"ח ורוצה שינוי אסטרטגי</li>
+              <li>ה CTA סדנה חינמית מרגיש זול לבכיר</li>
+              <li>פלטת הצבעים לא מעבירה רצינות ויוקרה</li>
+              <li>המבנה עמוס, אין תהליך ברור</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="section-num">04</p>
+    </div>
+  </section>
+
+  <!-- 05 ניתוח העיצוב החדש -->
+  <section id="sec-5" class="section reveal">
+    <div class="row">
+      <div class="text">
+        <div>
+          <h2>ניתוח העיצוב החדש</h2>
+          <p class="eyebrow">Figma website</p>
+        </div>
+        <div class="stack">
+          <img class="hero-img new" src="assets/hero-new.png" alt="Hero — עיצוב חדש">
+
+          <div class="card alt reveal-child">
+            <h3>5.1 כותרת ראשי Hero</h3>
+            <p>הכותרת החדשה היא "הגיע הזמן שהשוק יבין באמת מי אתם" — פניה אמפאורמנט לבכיר שמרגיש שהשוק לא רואה את ערכו. ה-CTA הראשי: "לתיאום שיחת היכרות" — אינטראקציה אישית ואיכותית.</p>
+          </div>
+
+          <div class="card alt reveal-child">
+            <h3>5.2 שפה ועיצוב</h3>
+            <ul class="list">
+              <li>שפה אוטוריטטיבית ועסקית: "בהירות. מיצוב. מיתוג. נטוורקינג."</li>
+              <li>ניווט ממוקד: דף הבית, אודות, התהליך, המלצות, השירותים שלי, יצירת קשר</li>
+              <li>תהליך מובנה בשלושה שלבים ברורים: אבחון וכיוון ← אסטרטגיה ← יציאה לשוק</li>
+              <li>הוכחה חברתית מספרית: 152+ לקוחות בכירים, 15 שנות ניסיון, 98% הגיעו לתפקיד</li>
+              <li>כרטיסי קהל יעד ספציפיים: תקועים במקום, בכירים ודירקטורים, מנהלים, שינוי קריירה</li>
+            </ul>
+          </div>
+
+          <div class="card alt reveal-child">
+            <h3>5.3 חוזקות</h3>
+            <div class="strengths-cols">
+              <div>
+                <p>עיצוב כהה יוקרתי מרגיש Premium</p>
+                <p>CTA איכותי שיחת היכרות מתאים לחוויה של הלקוח הבכיר</p>
+              </div>
+              <div>
+                <p>מיצוב ברור ומובחן — מדבר ישירות לבכיר</p>
+                <p>תהליך שלב אחר שלב מוריד חרדה ומגביר אמון</p>
+                <p>נתונים כמותיים מחזקים אמינות</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-card reveal-child">
+            <h3>צבעים עיקריים</h3>
+            <div class="swatches">
+              <div class="swatch"><span class="chip" style="background:#e0127e;"></span><span>ורוד עז — #e0127e</span></div>
+              <div class="swatch"><span class="chip" style="background:#cb9b42;"></span><span>זהב — #cb9b42</span></div>
+              <div class="swatch"><span class="chip" style="background:#2c2c2e;"></span><span>כהה — #2c2c2e</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="section-num">05</p>
+    </div>
+  </section>
+
+  <!-- 06 השוואה מקיפה -->
+  <section id="sec-6" class="section reveal">
+    <div class="row">
+      <div class="text" style="gap:40px;">
+        <h2>השוואה מקיפה — עיצוב קיים מול עיצוב חדש</h2>
+        <div class="table-wrap">
+          <table class="compare2">
+            <thead>
+              <tr><th>עיצוב חדש</th><th>עיצוב קיים</th><th>אלמנט</th></tr>
+            </thead>
+            <tbody>
+              <tr class="reveal-row"><td>הגיע הזמן שהשוק יבין באמת מי אתם</td><td>שינוי תעסוקתי. אישי. מדויק.</td><td>כותרת Hero</td></tr>
+              <tr class="reveal-row"><td>לתיאום שיחת היכרות</td><td>הרשמה לסדנה חינמית</td><td>CTA ראשי</td></tr>
+              <tr class="reveal-row"><td>כהה, זהב, ורוד סגנון יוקרתי</td><td>בהיר, סגול, חם</td><td>פלטת צבעים</td></tr>
+              <tr class="reveal-row"><td>ממוקד — 6 ערכים ממוקדים</td><td>רחב — 8 ערכים כולל בלוג</td><td>ניווט</td></tr>
+              <tr class="reveal-row"><td>חוסר בהירות, מיתוג, נטוורקינג</td><td>שולחים קו"ח ולא מקבלים תגובות</td><td>כאב מרכזי</td></tr>
+              <tr class="reveal-row"><td>סטטיסטיקות + המלצה של בכירה</td><td>המלצות אישיות ורגשיות</td><td>הוכחה חברתית</td></tr>
+              <tr class="reveal-row"><td>שלושה שלבים ברורים ומובנים</td><td>אין רשימת שירותים</td><td>תהליך</td></tr>
+              <tr class="reveal-row"><td>3 שירותים פרימיום ממוקדים</td><td>6 שירותים רחבים</td><td>שירותים</td></tr>
+              <tr class="reveal-row"><td>מנהלים, בכירים, C-level</td><td>כלל מחפשי העבודה</td><td>קהל יעד</td></tr>
+              <tr class="reveal-row"><td>ממוקד, ברור, מוביל לפעולה</td><td>ארוך, תוכן עשיר</td><td>אורך הדף</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="section-num">06</p>
+    </div>
+  </section>
+
+  <!-- 07 הנמקת החלטות עיצוב -->
+  <section id="sec-7" class="section reveal">
+    <div class="row">
+      <div class="text" style="gap:40px;">
+        <h2>הנמקת החלטות עיצוב מרכזיות</h2>
+        <div class="reason-grid">
+          <div class="reason-row">
+            <div class="reason-item reveal-child">
+              <p class="tag">CTA שיחת היכרות במקום סדנה חינמית</p>
+              <p>לבכיר, "חינמי" מרגיש זול ולא מותאם. שיחת היכרות אישית מעבירה שירות High-touch, אינדיבידואלי ואיכותי בדיוק מה שמצדיק השקעה.</p>
+            </div>
+            <div class="reason-item reveal-child">
+              <p class="tag">צבעוניות כהה וזהב</p>
+              <p>הבכיר רגיל לאסתטיקה של מותגי פרימיום. צבעים כהים עם אקצנט זהב מעבירים יוקרה, רצינות ואוטוריטה בדיוק מה שהלקוח הבכיר מצפה לראות מיועצת קריירה שהוא ישלם עליה כסף רציני.</p>
+            </div>
+          </div>
+          <div class="reason-row">
+            <div class="reason-item reveal-child">
+              <p class="tag">תהליך שלב אחר שלב</p>
+              <p>הבכיר רגיל לחשיבה תהליכית ואסטרטגית. מבנה ברור של שלושה שלבים — אבחון → אסטרטגיה → יציאה לשוק — מוריד חרדה ומגביר אמון.</p>
+            </div>
+            <div class="reason-item reveal-child">
+              <p class="tag">נתונים כמותיים במקום המלצות אישיות</p>
+              <p>152+ בכירים, 15 שנים, 98% הצלחה — הבכיר מושפע מנתונים ומהוכחות מספריות. זה מדבר אליו יותר מסיפור אישי רגשי.</p>
+            </div>
+          </div>
+          <div class="reason-row">
+            <div class="reason-spacer"></div>
+            <div class="reason-item reveal-child">
+              <p class="tag">ניווט ממוקד</p>
+              <p>הסרת הבלוג, קבוצות הוואטסאפ ואלמנטים קהילתיים מהניווט הראשי מחזקת את הפוקוס על הסמכות המקצועית ומונעת התפזרות.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="section-num">07</p>
+    </div>
+  </section>
+
+  <!-- 08 סיכום -->
+  <section id="sec-8" class="section reveal" style="border-bottom:none;">
+    <div class="row">
+      <div class="text summary">
+        <h2>סיכום ומסקנות</h2>
+        <p>שני העיצובים נבנו לאותה זהות מקצועית — דנה פרנקל כמאמנת קריירה ויעוץ תעסוקתי, ההבדל הוא במי מדברים.</p>
+        <p>העיצוב הקיים ממשיך לשרת היטב את קהל מחפשי העבודה הרחב — כזה שזקוק לחום, לקהילה ולכלים מעשיים על מנת להשיג את המטרה.</p>
+        <p>העיצוב החדש, המבוסס על צבעי שחור, זהב ופוקסיה, משדר תחושה של מותג פרמיום נקי, בשל ומסודר. הוא פונה לבכיר שצריך אסטרטגיה, מיצוב ומישהו שמדבר בגובה העיניים שלו.</p>
+        <p>ההחלטה העסקית שדנה מעדיפה היא לגדול בערך ולפנות ללקוחות בכירים.</p>
+      </div>
+      <p class="section-num">08</p>
+    </div>
+  </section>
+
+  <div class="cta-wrap">
+    <a class="cta-btn" href="#">מעבר לאתר</a>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+
+  revealEls.forEach(function (el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(32px)';
+    el.style.transition = 'opacity .8s cubic-bezier(.2,.7,.3,1), transform .8s cubic-bezier(.2,.7,.3,1)';
+  });
+
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+      el.classList.add('is-visible');
+      el.querySelectorAll('.reveal-child').forEach(function (child, i) {
+        child.style.transitionDelay = (i * 110) + 'ms';
+      });
+      el.querySelectorAll('.reveal-row').forEach(function (row, i) {
+        row.style.transitionDelay = (i * 70) + 'ms';
+      });
+      revealObserver.unobserve(el);
+    });
+  }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+  revealEls.forEach(function (el) { revealObserver.observe(el); });
+
+  var sections = [1, 2, 3, 4, 5, 6, 7, 8]
+    .map(function (n) { return document.getElementById('sec-' + n); })
+    .filter(Boolean);
+  var dotEls = Array.prototype.slice.call(document.querySelectorAll('.dot-num'));
+
+  function setActive(n) {
+    dotEls.forEach(function (dot) {
+      dot.classList.toggle('active', Number(dot.dataset.n) === n);
+    });
+  }
+
+  var navObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setActive(Number(entry.target.id.replace('sec-', '')));
+      }
+    });
+  }, { root: null, rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+  sections.forEach(function (el) { navObserver.observe(el); });
+
+  dotEls.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      var el = document.getElementById('sec-' + dot.dataset.n);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
