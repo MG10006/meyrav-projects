@@ -136,12 +136,12 @@ export default function CaseStudyPage() {
           <p className="mb-0 mt-10 text-[clamp(18px,2.4vw,26px)] text-[#55555a]">
             מיצוב מחדש לקהל בכירים ומנהלים
           </p>
-          <div className="mt-14 flex w-full max-w-[700px] items-center justify-center gap-7 border-t border-border pt-9">
+          <div className="mt-14 flex w-full max-w-[700px] items-center justify-center gap-7 border-t-[0.5px] border-pink pt-9">
             <div className="flex items-center gap-2">
               <img src={figmaIcon} alt="" className="size-6" />
               <span className="text-[15px] font-medium text-[#6b6b70]">Figma</span>
             </div>
-            <div className="h-4 w-px bg-[#d4d4d8]" />
+            <div className="h-9 w-[0.5px] bg-pink" />
             <div className="flex items-center gap-2">
               <img src={claudeIcon} alt="" className="size-6" />
               <span className="text-[15px] font-medium text-[#6b6b70]">Claude</span>
@@ -273,6 +273,26 @@ export default function CaseStudyPage() {
           </Card>
           <Card className="rounded-[10px] border-none bg-white/50 shadow-none">
             <CardContent className="flex flex-col gap-4 px-8 py-2">
+              <h3 className="m-0 text-2xl font-semibold text-foreground">צבעים עיקריים</h3>
+              <div className="flex flex-wrap items-start gap-10 lg:gap-24">
+                {[
+                  { hex: '#e0127e', label: 'ורוד עז — #e0127e', rounded: 'rounded-[14px]' },
+                  { hex: '#cb9b42', label: 'זהב — #cb9b42', rounded: 'rounded-lg' },
+                  { hex: '#2c2c2e', label: 'כהה — #2c2c2e', rounded: 'rounded-lg' },
+                ].map((swatch) => (
+                  <div key={swatch.hex} className="flex flex-col items-center gap-3">
+                    <span
+                      className={`size-[77px] shrink-0 border border-border ${swatch.rounded}`}
+                      style={{ background: swatch.hex }}
+                    />
+                    <span className="text-base">{swatch.label}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="rounded-[10px] border-none bg-white/50 shadow-none">
+            <CardContent className="flex flex-col gap-4 px-8 py-2">
               <h3 className="m-0 text-2xl font-semibold text-foreground">5.3 חוזקות</h3>
               <div className="flex flex-col gap-5 text-[17px] leading-[1.85] lg:flex-row lg:gap-10">
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -289,32 +309,12 @@ export default function CaseStudyPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="rounded-[10px] border-none bg-white/50 shadow-none">
-            <CardContent className="flex flex-col gap-4 px-8 py-2">
-              <h3 className="m-0 text-2xl font-semibold text-foreground">צבעים עיקריים</h3>
-              <div className="flex flex-wrap items-center gap-5">
-                {[
-                  { hex: '#e0127e', label: 'ורוד עז — #e0127e' },
-                  { hex: '#cb9b42', label: 'זהב — #cb9b42' },
-                  { hex: '#2c2c2e', label: 'כהה — #2c2c2e' },
-                ].map((swatch) => (
-                  <div key={swatch.hex} className="flex items-center gap-3">
-                    <span
-                      className="size-11 shrink-0 rounded-lg border border-border"
-                      style={{ background: swatch.hex }}
-                    />
-                    <span className="text-base">{swatch.label}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </CsSection>
 
         {/* 06 השוואה מקיפה */}
         <CsSection n={6}>
           <h2 className="m-0 text-[38px] font-bold text-foreground">
-            השוואה מקיפה — עיצוב קיים מול עיצוב חדש
+            השוואה עיצוב קיים מול עיצוב חדש
           </h2>
           <CompareTable
             headers={['עיצוב חדש', 'עיצוב קיים', 'אלמנט']}
@@ -365,7 +365,7 @@ export default function CaseStudyPage() {
             asChild
             className="h-auto rounded-[30px] bg-[#1c1c1e] px-10 py-[18px] text-lg font-medium text-white transition-all hover:-translate-y-0.5 hover:bg-pink"
           >
-            <Link to="/">מעבר לאתר</Link>
+            <Link to="/">מעבר לדף נחיתה</Link>
           </Button>
         </div>
       </div>
