@@ -1,46 +1,105 @@
-import { Gallery6 } from '@/components/blocks/gallery6'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from '@/components/ui/carousel'
 import service1 from '@/assets/home/service-1.png'
 import service2 from '@/assets/home/service-2.png'
 import service3 from '@/assets/home/service-3.png'
 
-const items = [
+const services = [
   {
-    id: 'service-cv',
-    title: 'כתיבה קורות חיים באנגלית ובעברית',
-    summary:
-      'כתיבה ושדרוג קורות חיים באנגלית ובעברית כולל תרגום מקצועי שמבליטים את הערך שלך, עוברים את שלב הסינון התאמה לתחום ומביאים זימונים לראיונות עבודה',
-    url: '/contact',
     image: service1,
-    linkText: 'להזמנת כתיבת קו״ח',
+    title: 'כתיבה קורות חיים באנגלית ובעברית',
+    text: 'כתיבה ושדרוג קורות חיים באנגלית ובעברית כולל תרגום מקצועי שמבליטים את הערך שלך, עוברים את שלב הסינון התאמה לתחום ומביאים זימונים לראיונות עבודה',
+    cta: 'להזמנת כתיבת קו״ח',
   },
   {
-    id: 'service-coaching',
-    title: 'ליווי בכירים ואנשי מקצוע',
-    summary:
-      'תהליך קצר וממוקד שיחזיר אתכם לעצמכם ולכיוון הנכון. תהליך עומק שמשלב אסטרטגיה פרקטית ועבודה מנטלית כדי לעזור לך להתקדם לתפקיד הבא שלך בצורה מדויקת',
-    url: '/contact',
     image: service2,
-    linkText: 'לתיאום שיחת ליווי',
+    title: 'ליווי בכירים ואנשי מקצוע',
+    text: 'תהליך קצר וממוקד שיחזיר אתכם לעצמכם ולכיוון הנכון. תהליך עומק שמשלב אסטרטגיה פרקטית ועבודה מנטלית כדי לעזור לך להתקדם לתפקיד הבא שלך בצורה מדויקת',
+    cta: 'לתיאום שיחת ליווי',
   },
   {
-    id: 'service-interview',
-    title: 'הכנה לראיונות עבודה מקצועית',
-    summary:
-      'ראיונות עבודה יכולים לעורר רגשות של חרדה ולחץ בקרב רבים. אל תפספסו את ההזדמנות להציג את עצמכם כמועמדים האולטימטיביים – השקיעו ויהיה לכם יתרון',
-    url: '/contact',
     image: service3,
-    linkText: 'להרשמה להכנה לראיון',
+    title: 'הכנה לראיונות עבודה מקצועית',
+    text: 'ראיונות עבודה יכולים לעורר רגשות של חרדה ולחץ בקרב רבים. אל תפספסו את ההזדמנות להציג את עצמכם כמועמדים האולטימטיביים – השקיעו ויהיה לכם יתרון',
+    cta: 'להרשמה להכנה לראיון',
   },
 ]
 
 export default function ServicesSection() {
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    if (!api) return
+    setCurrent(api.selectedScrollSnap())
+    api.on('select', () => setCurrent(api.selectedScrollSnap()))
+  }, [api])
+
   return (
-    <Gallery6
-      id="services"
-      heading="השירותים שלי"
-      demoUrl="/contact"
-      demoText="לתיאום שיחת היכרות"
-      items={items}
-    />
+    <section id="services" className="flex flex-col items-center gap-8 py-12 lg:py-16">
+      <h2 className="m-0 text-center text-[clamp(28px,4vw,40px)] font-extrabold">
+        השירותים שלי
+      </h2>
+
+      {/* הכרטיס הפעיל ממורכז והשכנים מציצים משני הצדדים, כמו בעיצוב בפיגמה */}
+      <Carousel
+        setApi={setApi}
+        opts={{ direction: 'rtl', loop: true, align: 'center' }}
+        className="w-full"
+      >
+        <CarouselContent className="-ms-10">
+          {services.map((service) => (
+            <CarouselItem
+              key={service.title}
+              className="basis-[85%] ps-10 sm:basis-[70%] lg:basis-[581px]"
+            >
+              <Card className="h-full rounded-2xl border-gold bg-transparent shadow-none">
+                <CardContent className="flex h-full flex-col items-center gap-8 p-8 text-center">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="h-[308px] w-full max-w-[403px] rounded-2xl object-cover"
+                  />
+                  <h3 className="m-0 text-2xl font-bold">{service.title}</h3>
+                  <p className="m-0 text-xl leading-[1.4] text-start">{service.text}</p>
+                  <Button
+                    asChild
+                    className="mt-auto h-auto rounded-xl px-10 py-4 text-[17px] font-medium transition-transform hover:-translate-y-0.5 hover:bg-gold-hover"
+                  >
+                    <Link to="/contact">{service.cta}</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+
+      <div className="flex items-center gap-3" role="tablist" aria-label="ניווט בין שירותים">
+        {services.map((service, i) => (
+          <button
+            key={service.title}
+            type="button"
+            role="tab"
+            aria-selected={current === i}
+            aria-label={service.title}
+            onClick={() => api?.scrollTo(i)}
+            className={`size-[18px] rounded-full border transition-colors ${
+              current === i
+                ? 'border-pink bg-pink'
+                : 'border-muted-foreground/70 bg-transparent hover:border-muted-foreground'
+            }`}
+          />
+        ))}
+      </div>
+    </section>
   )
 }
