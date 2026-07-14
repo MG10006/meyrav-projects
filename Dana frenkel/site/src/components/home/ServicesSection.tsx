@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import service1 from '@/assets/home/service-1.png'
@@ -49,7 +50,7 @@ export default function ServicesSection() {
                 asChild
                 className="h-auto rounded-xl px-10 py-4 text-[17px] font-medium transition-transform hover:-translate-y-0.5 hover:bg-gold-hover"
               >
-                <a href="#contact">{service.cta}</a>
+                <Link to="/contact">{service.cta}</Link>
               </Button>
             </CardContent>
           </Card>

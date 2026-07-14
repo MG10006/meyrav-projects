@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import heroBg from '@/assets/home/hero-bg.png'
 
@@ -27,7 +28,7 @@ export default function Hero() {
           asChild
           className="h-auto rounded-xl px-8 py-[18px] text-xl font-medium transition-transform hover:-translate-y-0.5 hover:bg-gold-hover"
         >
-          <a href="#contact">לתיאום שיחת היכרות</a>
+          <Link to="/contact">לתיאום שיחת היכרות</Link>
         </Button>
       </div>
     </section>

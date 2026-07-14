@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
@@ -6,13 +7,43 @@ import logo from '@/assets/home/logo.png'
 import whatsappIcon from '@/assets/home/whatsapp-white.svg'
 
 export const navLinks = [
-  { href: '#contact', label: 'יצירת קשר' },
+  { href: '/contact', label: 'יצירת קשר' },
   { href: '#services', label: 'השירותים שלי' },
   { href: '#testimonials', label: 'המלצות' },
   { href: '#process', label: 'התהליך' },
   { href: '#about', label: 'אודות' },
   { href: '#home', label: 'דף הבית' },
 ]
+
+// קישור ניווט: נתיבי ראוטר עוברים דרך Link, עוגנים מדפים אחרים חוזרים להום־פייג'
+export function NavAnchor({
+  href,
+  className,
+  onClick,
+  children,
+}: {
+  href: string
+  className?: string
+  onClick?: () => void
+  children: React.ReactNode
+}) {
+  const { pathname } = useLocation()
+
+  if (href.startsWith('/')) {
+    return (
+      <Link to={href} onClick={onClick} className={className}>
+        {children}
+      </Link>
+    )
+  }
+
+  const target = pathname === '/' ? href : import.meta.env.BASE_URL + href
+  return (
+    <a href={target} onClick={onClick} className={className}>
+      {children}
+    </a>
+  )
+}
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(false)
@@ -32,20 +63,20 @@ export default function SiteHeader() {
 
       <nav className="hidden items-center gap-6 md:flex">
         {navLinks.map((link) => (
-          <a
+          <NavAnchor
             key={link.href}
             href={link.href}
             className="whitespace-nowrap text-base font-medium text-foreground transition-colors hover:text-gold focus-visible:text-gold"
           >
             {link.label}
-          </a>
+          </NavAnchor>
         ))}
       </nav>
 
       <div className="flex items-center gap-2">
-        <a href="#home" className="shrink-0">
+        <NavAnchor href="#home" className="shrink-0">
           <img src={logo} alt="דנה פרנקל — ייעוץ קריירה" className="h-14 w-auto lg:h-[60px]" />
-        </a>
+        </NavAnchor>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -57,14 +88,14 @@ export default function SiteHeader() {
             <SheetTitle className="sr-only">תפריט ניווט</SheetTitle>
             <nav className="mt-10 flex flex-col items-start gap-6 px-6">
               {[...navLinks].reverse().map((link) => (
-                <a
+                <NavAnchor
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className="text-lg font-medium text-foreground transition-colors hover:text-gold"
                 >
                   {link.label}
-                </a>
+                </NavAnchor>
               ))}
             </nav>
           </SheetContent>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 
 export default function ContactCta() {
@@ -14,7 +15,7 @@ export default function ContactCta() {
         asChild
         className="mt-4 h-auto rounded-xl px-8 py-[18px] text-xl font-medium transition-transform hover:-translate-y-0.5 hover:bg-gold-hover"
       >
-        <a href="#contact">לתיאום שיחת היכרות</a>
+        <Link to="/contact">לתיאום שיחת היכרות</Link>
       </Button>
     </section>
   )
