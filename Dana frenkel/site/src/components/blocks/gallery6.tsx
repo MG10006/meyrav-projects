@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, ArrowUpLeft } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -15,9 +16,11 @@ interface GalleryItem {
   summary: string
   url: string
   image: string
+  linkText?: string
 }
 
 interface Gallery6Props {
+  id?: string
   heading?: string
   demoUrl?: string
   demoText?: string
@@ -25,7 +28,32 @@ interface Gallery6Props {
   items?: GalleryItem[]
 }
 
+// קישור פנימי (נתיב ראוטר) עובר דרך Link, קישור חיצוני/עוגן נשאר <a>
+function ItemLink({
+  url,
+  className,
+  children,
+}: {
+  url: string
+  className?: string
+  children: React.ReactNode
+}) {
+  if (url.startsWith('/')) {
+    return (
+      <Link to={url} className={className}>
+        {children}
+      </Link>
+    )
+  }
+  return (
+    <a href={url} className={className}>
+      {children}
+    </a>
+  )
+}
+
 const Gallery6 = ({
+  id,
   heading = 'גלריה',
   demoUrl = '#',
   demoText = 'לכל הפרויקטים',
@@ -52,20 +80,20 @@ const Gallery6 = ({
   }, [carouselApi])
 
   return (
-    <section className="py-16 lg:py-24">
+    <section id={id} className="py-16 lg:py-24">
       <div className="px-8 lg:px-20">
         <div className="mb-8 flex flex-col justify-between md:mb-14 md:flex-row md:items-end lg:mb-16">
           <div>
             <h2 className="mb-3 text-3xl font-bold md:mb-4 md:text-4xl lg:mb-6">
               {heading}
             </h2>
-            <a
-              href={demoUrl}
+            <ItemLink
+              url={demoUrl}
               className="group flex items-center gap-1 text-sm font-medium transition-colors hover:text-gold md:text-base lg:text-lg"
             >
               {demoText}
               <ArrowUpLeft className="size-4 transition-transform group-hover:-translate-x-1" />
-            </a>
+            </ItemLink>
           </div>
           <div className="mt-8 flex shrink-0 items-center justify-start gap-2">
             <Button
@@ -100,6 +128,7 @@ const Gallery6 = ({
           setApi={setCarouselApi}
           opts={{
             direction: 'rtl',
+            loop: true,
             breakpoints: {
               '(max-width: 768px)': {
                 dragFree: true,
@@ -111,7 +140,7 @@ const Gallery6 = ({
           <CarouselContent className="-me-4 ms-8 2xl:me-[max(0rem,calc(50vw-700px-1rem))] 2xl:ms-[max(8rem,calc(50vw-700px+1rem))]">
             {items.map((item) => (
               <CarouselItem key={item.id} className="ps-4 md:max-w-[452px]">
-                <a href={item.url} className="group flex flex-col justify-between">
+                <ItemLink url={item.url} className="group flex flex-col justify-between">
                   <div>
                     <div className="flex aspect-[3/2] overflow-clip rounded-xl">
                       <div className="flex-1">
@@ -131,11 +160,11 @@ const Gallery6 = ({
                   <div className="mb-8 line-clamp-2 text-sm text-muted-foreground md:mb-12 md:text-base lg:mb-9">
                     {item.summary}
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    {readMoreText}
+                  <div className="flex items-center gap-2 text-sm transition-colors group-hover:text-gold">
+                    {item.linkText ?? readMoreText}
                     <ArrowLeft className="size-5 transition-transform group-hover:-translate-x-1" />
                   </div>
-                </a>
+                </ItemLink>
               </CarouselItem>
             ))}
           </CarouselContent>
