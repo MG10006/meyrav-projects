@@ -76,10 +76,10 @@ function CsSection({
       className={`px-6 py-14 lg:px-[100px] lg:py-24 ${last ? '' : 'border-b border-border'}`}
     >
       <div className="flex w-full flex-col gap-6 lg:flex-row lg:items-start lg:gap-12">
-        <div className="flex min-w-0 flex-1 flex-col gap-7">{children}</div>
-        <p className="order-first m-0 shrink-0 text-[44px] font-bold text-[#b4b4b8] lg:order-none lg:w-[140px] lg:text-end lg:text-[64px]">
+        <p className="m-0 shrink-0 text-[44px] font-bold text-[#b4b4b8] lg:w-[140px] lg:text-[64px]">
           {String(n).padStart(2, '0')}
         </p>
+        <div className="flex min-w-0 flex-1 flex-col gap-7">{children}</div>
       </div>
     </Reveal>
   )
